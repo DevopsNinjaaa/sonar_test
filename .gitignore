@@ -1,2 +1,5 @@
 **/**env
 htmlcov
+**/__pycache__/
+**/*.cpython-38.pyc
+.coverage

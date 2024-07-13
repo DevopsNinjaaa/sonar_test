@@ -1,4 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from config import Config 
+from pymongo import MongoClient
 from controllers.player_controller import (
     get_all_players,
     get_player,
@@ -8,6 +10,21 @@ from controllers.player_controller import (
 )
 
 player_bp = Blueprint('player', __name__)
+
+mongo_url = Config.MONGO_URL
+mongo_username = Config.MONGO_USERNAME
+mongo_password = Config.MONGO_PASSWORD
+
+@player_bp.route('/mongocheck', methods=['GET'])
+def mongo_check():
+    try:
+        client = MongoClient(mongo_url, username=mongo_username, password=mongo_password)
+        db = client.get_database()  # Replace with your database name if different
+        db.command('ping')  # Check if we can ping MongoDB
+        client.close()
+        return jsonify({'status': 'ok', 'message': 'MongoDB connection successful.'}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'MongoDB connection failed: {str(e)}'}), 500
 
 @player_bp.route('/players', methods=['GET'])
 def get_players():

@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from controllers.memory_controller import (
     get_all_players_memory,
     get_player_memory,
@@ -8,6 +8,10 @@ from controllers.memory_controller import (
 )
 
 memory_bp = Blueprint('memory', __name__)
+
+@memory_bp.route('/healthcheck', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'up', 'message': 'Application is running.'}), 200
 
 @memory_bp.route('/players', methods=['GET'])
 def get_players_memory():
