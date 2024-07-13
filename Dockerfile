@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY req.txt .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r req.txt
 
 COPY . .
 

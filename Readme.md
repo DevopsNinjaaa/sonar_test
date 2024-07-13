@@ -85,17 +85,19 @@
 1. **Generate the Coverage Report**:
 
    ```bash
+   # coverage report` generates a textual report
    coverage report -m
+   
+   # `-m` shows the missing lines of code.
    ```
-     - coverage report` generates a textual report
 
-    - `-m` shows the missing lines of code.
 
 1. **Generate an HTML Coverage Report**:
 
    ```bash
    coverage html
    ```
+   
    This will create an `htmlcov` directory with the HTML report. Open `htmlcov/index.html` in a web browser to view the coverage details.
 
 4. **Coverage Explanation**
@@ -126,7 +128,7 @@
 2. **Run the Flask App Container**:
 
    ```bash
-   docker run -d --name flask_app -p 5000:5000 --env MONGO_URL=mongodb://myusername:mypassword@host.docker.internal:27017/mydatabase my_flask_app
+   docker run -d --name flask_app -p 5000:5000 --env MONGO_URL=mongodb://host.docker.internal:27017 --env MONGO_USERNAME=myusername --env MONGO_PASSWORD=mypassword  my_flask_app
    ```
 
 -------------------------------
@@ -191,231 +193,6 @@
 
 ----------------------------------------------
 
-## Test Code Explanation
+[Unit Test Code Explanation](./docs/test_explantion.md)
 
-### Test for MongoDB-based CRUD Operations (`test_player_controller.py`)
-
-1. **Imports and Setup**:
-   
-    ```python
-    import unittest
-    from unittest.mock import patch
-    from app import app
-    ```
-    - `unittest` is the Python unit testing framework.
-    - `unittest.mock.patch` is used to mock the `collection` object to simulate database operations.
-    - `app` is imported from our Flask application to create test clients.
-
-2. **Test Class**:
-    
-      This class contains all test cases for the MongoDB-based CRUD operations. It inherits from `unittest.TestCase`.
-
-      ```python
-      class TestPlayerController(unittest.TestCase):
-      ```
-
-3. **Mocking the Collection**:
-     
-    - `@patch` replaces the actual `collection` object in the `player_controller` with a mock object, allowing us to simulate database responses.
-    
-        ```python
-        @patch('controllers.player_controller.collection')
-        ```
-
-4. **Test Cases**:
-
-    - **`test_get_all_players`**:
-
-      Simulates a call to `collection.find` and verifies the response of the `GET /api/players` endpoint.
-
-         ```python
-         def test_get_all_players(self, mock_collection):
-             mock_collection.find.return_value = [...]
-             with app.test_client() as client:
-                 response = client.get('/api/players')
-                 self.assertEqual(response.status_code, 200)
-                 self.assertEqual(len(response.json), 1)
-                 self.assertEqual(response.json[0]['name'], 'Lionel Messi')
-         ```
-
-    - **`test_create_player`**:
-      
-       Simulates inserting a new player and verifies the response of the `POST /api/player` endpoint.
-      
-         ```python
-         def test_create_player(self, mock_collection):
-             mock_collection.insert_one.return_value.inserted_id = '60c72b2f4f1a2567f8d6b6c0'
-             with app.test_client() as client:
-                 response = client.post('/api/player', json={...})
-                 self.assertEqual(response.status_code, 201)
-                 self.assertEqual(response.json['_id'], '60c72b2f4f1a2567f8d6b6c0')
-         ```
-
-
----------------------------------
-
-### Test for In-memory CRUD Operations (`test_memory_controller.py`)
-
-1. **Imports and Setup**:
-    
-    Similar to the MongoDB-based tests, but also imports `players_memory` to manipulate the in-memory data.
-    
-    ```python
-    import unittest
-    from app import app
-    from controllers.memory_controller import players_memory
-    ```
-    
-
-2. **Test Class**:
-    
-    Contains all test cases for in-memory CRUD operations.
-    
-    ```python
-    class TestMemoryController(unittest.TestCase):
-    ```
-
-3. **Setup Method**:
-    
-    Clears the in-memory data before each test to ensure a clean state.
-    
-    ```python
-    def setUp(self):
-        players_memory.clear()
-        self.client = app.test_client()
-    ```
-
-4. **Test Cases**:
-    
-    - **`test_get_all_players_memory`**:
-      
-      Adds a player to `players_memory` and verifies the response of the `GET /memory/players` endpoint.
-      
-      
-      ```python
-      def test_get_all_players_memory(self):
-          players_memory['1'] = {...}
-          response = self.client.get('/memory/players')
-          self.assertEqual(response.status_code, 200)
-          self.assertEqual(len(response.json), 1)
-          self.assertEqual(response.json[0]['name'], 'Lionel Messi')
-      ```
-
-
-    - **`test_update_player_memory`**:
-      
-      Updates an existing player in-memory and verifies the response of the `PUT /memory/player/<player_id>` endpoint.
-      
-      ```python
-      def test_update_player_memory(self):
-          player_id = '1'
-          players_memory[player_id] = {...}
-          response = self.client.put(f'/memory/player/{player_id}', json={...})
-          self.assertEqual(response.status_code, 200)
-          self.assertEqual(players_memory[player_id]['matches'], 910)
-      ```
-----------------------------
-
-## Basic Pytest Usage
-
-### Basic Usage
-
-1. **Run all tests in the current directory and subdirectories**:
-   
-   ```bash
-   pytest
-
-   # Run tests and show print statements (stdout)
-   pytest -s
-   ```
-
-2. **Run tests in a specific file**:
-   
-   ```bash
-   pytest path/to/test_file.py
-   ```
-
-3. **Run a specific test function**:
-   
-   ```bash
-   pytest path/to/test_file.py::test_function_name
-   ```
-
-1. **Run tests matching a specific substring in their name**:
-
-   ```bash
-   pytest -k "substring"
-   # Run tests that match a given expression
-   pytest -k "expression"
-   ```
-
-1. **Run tests and stop on the first error or failure**:
-   
-   ```bash
-   pytest -x
-
-   # Run tests and stop after the first N failures
-   pytest --maxfail=N
-   ```
-
-   --------------------
-
-### Output Options
-
-1. **Show detailed test execution summary**:
-   
-   ```bash
-   pytest -v
-
-   # Show only the summary of test results (quiet mode)
-   pytest -q
-   ```
-
-1. **Generate JUnit XML report for CI integration**:
-  
-   ```bash
-   pytest --junitxml=path/to/output.xml
-   ```
-
-1. **Run tests with coverage report**:
-  
-   ```bash
-   pytest --cov=path/to/module_or_package
-   ```
-
-2. **Generate HTML coverage report**:
-  
-   ```bash
-   pytest --cov=path/to/module_or_package --cov-report=html
-   ```
-   
-   --------------------
-
-### Running Tests in Parallel
-
-1. **Run tests in parallel processes**:
-   ```bash
-   pytest -n auto
-   ```
-
-2. **Run tests in parallel on multiple cores (N cores)**:
-   ```bash
-   pytest -n N
-   ```
-   --------------------
-
-### Running Tests with Custom Configuration
-
-1. **Use a custom configuration file (pytest.ini)**:
-   
-   ```bash
-   pytest -c path/to/pytest.ini
-   ```
-
-2. **Run tests with custom command-line options**:
-   
-   ```bash
-   pytest --options=value
-   ```
-
---------------------
+[Pytest Basic Command Usage](./docs/pytest_usage.md)
