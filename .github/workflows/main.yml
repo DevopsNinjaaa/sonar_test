@@ -1,4 +1,4 @@
-name: My First CI Workflow
+name: My First CI Workflows
 
 on: [push, pull_request]
 
@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
-    steps:
+    steps:s
      - name: my sample step-1
        run: echo "hellow from step 1"
      - name: this is step-2
