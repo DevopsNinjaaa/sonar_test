@@ -1,20 +1,32 @@
-name: My First CI Workflows
+name: Greeting on variable day
 
-on: [push, pull_request]
+on:
+  workflow_dispatch
+
+env:
+  DAY_OF_WEEK: Monday  ## 1) Workflow specific variable
 
 jobs:
-  build:
+  greeting_job:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
-    steps:s
-     - name: my sample step-1
-       run: echo "hellow from step 1"
-     - name: this is step-2
-       run: |
-          echo "hellow from step 2"
-          pwd
-          ls 
-          hostname
-     - name: Print environment variable
-       run: echo $NODE_ENV
+      Greeting: Hello  ## 2) Job specific variable
+    steps:
+      - name: "Say Hello Mona it's Monday"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! -- ${goals}"
+        env:
+          First_Name: Mona  ## 3) for specific env variable
+  
+  second_job:
+    runs-on: ubuntu-latest
+    env:
+      goals: 5344 
+    steps:
+      - name: "stp-1"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! -- ${goals}"
+  
+  print_env_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Print All environment variable"
+        run: env
