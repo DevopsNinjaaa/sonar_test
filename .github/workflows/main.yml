@@ -1,0 +1,20 @@
+name: My First CI Workflow
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+    steps:
+     - name: my sample step-1
+       run: echo "hellow from step 1"
+     - name: this is step-2
+       run: |
+          echo "hellow from step 2"
+          pwd
+          ls 
+          hostname
+     - name: Print environment variable
+       run: echo $NODE_ENV
