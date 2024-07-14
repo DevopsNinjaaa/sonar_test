@@ -1,4 +1,4 @@
-name: My CI Workflow
+name: My First CI Workflow
 
 on: [push, pull_request]
 
