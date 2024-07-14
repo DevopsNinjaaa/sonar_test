@@ -4,7 +4,7 @@ on:
   push
 
 env:
-  AGE: 200
+  PACE: 45.6
 
 jobs:
   greeting_job:
@@ -12,20 +12,21 @@ jobs:
     steps:
       - name: "Testing Env Variable -1 "
         run: |
-          echo "MY_LANGAUGE -- ${MY_LANGAUGE} ➡️ (environment)"
-          echo "SKILLS -- ${SKILLS} ➡️ (repo) "
-          echo "HOBBY -- ${HOBBY} ➡️ (org) "
-          echo "AGE -- ${AGE} ➡️ (common) "
+          echo "MY_LANGAUGE -- ${var.MY_LANGAUGE} ➡️ (environment)"
+          echo "SKILLS -- ${var.SKILLS} ➡️ (repo) "
+          echo "HOBBY -- ${var.HOBBY} ➡️ (org) "
+          echo "AGE -- ${var.AGE} ➡️ (common) "
+          echo "PACE -- ${var.PACE} ➡️ (workflow) "
     
   second_job:
     runs-on: ubuntu-latest
     steps:
       - name: "Overiding with Workflow Env Var "
         run: |
-          echo "MY_LANGAUGE -- ${MY_LANGAUGE} ➡️ (environment)"
-          echo "SKILLS -- ${SKILLS} ➡️ (repo) "
-          echo "HOBBY -- ${HOBBY} ➡️ (org) "
-          echo "AGE -- ${AGE} ➡️ (common) "
+          echo "MY_LANGAUGE -- ${var.MY_LANGAUGE} ➡️ (environment)"
+          echo "SKILLS -- ${var.SKILLS} ➡️ (repo) "
+          echo "HOBBY -- ${var.HOBBY} ➡️ (org) "
+          echo "AGE -- ${var.AGE} ➡️ (common) "
         env:
           AGE: 303
-          HOBBY: "SkyDiving"
+          HOBBY: "SkyDiving"    
