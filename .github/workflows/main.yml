@@ -9,14 +9,22 @@ env:
 jobs:
   greeting_job:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: "Testing Env Variable -1 "
         run: |
+          env
           echo "MY_LANGAUGE -- ${{ vars.MY_LANGAUGE}} ➡️ (environment)"
           echo "SKILLS -- ${{ vars.SKILLS}} ➡️ (repo) "
           echo "HOBBY -- ${{ vars.HOBBY}} ➡️ (org) "
           echo "AGE -- ${{ vars.AGE}} ➡️ (common) "
           echo "PACE -- ${{ vars.PACE}} ➡️ (workflow) "
+
+          echo "MY_LANGAUGE -- ${{ env.MY_LANGAUGE}} ➡️ (environment)"
+          echo "SKILLS -- ${{ env.SKILLS}} ➡️ (repo) "
+          echo "HOBBY -- ${{ env.HOBBY}} ➡️ (org) "
+          echo "AGE -- ${{ env.AGE}} ➡️ (common) "
+          echo "PACE -- ${{ env.PACE}} ➡️ (workflow) "
     
   second_job:
     runs-on: ubuntu-latest
@@ -29,4 +37,4 @@ jobs:
           echo "AGE -- ${{ vars.AGE}} ➡️ (common) "
         env:
           AGE: 303
-          HOBBY: "SkyDiving" 
+          HOBBY: "SkyDiving"    
