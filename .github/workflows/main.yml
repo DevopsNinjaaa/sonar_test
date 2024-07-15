@@ -3,6 +3,10 @@ name: Greeting on variable day
 on:
   push
 
+defaults:
+  run:
+    shell: python
+
 env:
   PACE: 45.6
   MY_ORG: ${{ vars.HOBBY }}
@@ -11,7 +15,6 @@ jobs:
   greeting_job:
     runs-on: ubuntu-latest
     environment: dev
-    shell: python
     steps:
       - name: "Printing Job Context"
         run: |
