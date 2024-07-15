@@ -5,6 +5,7 @@ on:
 
 env:
   PACE: 45.6
+  MY_ORG: ${{ vars.HOBBY }}
 
 jobs:
   greeting_job:
@@ -13,17 +14,11 @@ jobs:
     steps:
       - name: "Testing Env Variable -1 "
         run: |
-          env
           echo "MY_LANGAUGE -- ${{ vars.MY_LANGAUGE}} ➡️ (environment)"
           echo "SKILLS -- ${{ vars.SKILLS}} ➡️ (repo) "
           echo "HOBBY -- ${{ vars.HOBBY}} ➡️ (org) "
-          echo "AGE -- ${{ vars.AGE}} ➡️ (common) "
-          echo "PACE -- ${{ vars.PACE}} ➡️ (workflow) "
-
-          echo "MY_LANGAUGE -- ${{ env.MY_LANGAUGE}} ➡️ (environment)"
-          echo "SKILLS -- ${{ env.SKILLS}} ➡️ (repo) "
           echo "HOBBY -- ${{ env.HOBBY}} ➡️ (org) "
-          echo "AGE -- ${{ env.AGE}} ➡️ (common) "
+          echo "AGE -- ${{ vars.AGE}} ➡️ (common) "
           echo "PACE -- ${{ env.PACE}} ➡️ (workflow) "
     
   second_job:
