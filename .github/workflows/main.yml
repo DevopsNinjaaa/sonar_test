@@ -12,8 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
+    shell: [python]
       - name: "Printing Job Context"
-        run: ${{ toJSON(job) }}
+        run: |
+          import json
+          json.dumps(${{ toJSON(job) }})
+          
         env:
           AGE: 303
           HOBBY: "SkyDiving"    
