@@ -13,7 +13,7 @@ jobs:
     environment: dev
     steps:
       - name: "Printing Job Context"
-        run: toJSON(job)
+        run: ${{ toJSON(job) }}
         env:
           AGE: 303
           HOBBY: "SkyDiving"    
