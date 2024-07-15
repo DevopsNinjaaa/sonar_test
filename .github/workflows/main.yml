@@ -12,8 +12,13 @@ env:
   MY_ORG: ${{ vars.HOBBY }}
 
 jobs:
+  sample-job:
+    steps:
+      - name: "sample-step"
+        run: echo "hi"
   greeting_job:
     runs-on: ubuntu-latest
+    needs: [sample-greeting_job]
     environment: dev
     services:
       postgres:
@@ -25,11 +30,14 @@ jobs:
           # Maps TCP port 5432 in the service container to a randomly chosen available port on the host.
           - 5432    
     steps:
+      - name: "Printing github Context"
+        run: |
+          import json
+          print(json.dumps(${{ toJSON(github) }}, indent=2 ) )
       - name: "Printing Job Context"
         run: |
           import json
-          json.dumps(${{ toJSON(job) }})
-          
+          print(json.dumps(${{ toJSON(job) }}, indent=2 ) )
         env:
           AGE: 303
-          HOBBY: "SkyDiving"    
+          HOBBY: "SkyDiving"
