@@ -31,7 +31,6 @@ jobs:
         ports:
           # Maps TCP port 5432 in the service container to a randomly chosen available port on the host.
           - 5432    
-    
     steps:
       - name: "Printing github Context"
         run: |
