@@ -89,7 +89,7 @@ jobs:
           HOBBY: "SkyDiving"
           NEEDS_CONTEXT: ${{ toJson(needs) }}
 
-     - name: "Printing inputs Context"
+      - name: "Printing inputs Context"
         run: |
           echo $INPUTS_CONTEXT
         env:
