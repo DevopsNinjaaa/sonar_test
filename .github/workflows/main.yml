@@ -12,24 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - name: "Testing Env Variable -1 "
-        run: |
-          echo "MY_LANGAUGE -- ${{ vars.MY_LANGAUGE}} ➡️ (environment)"
-          echo "SKILLS -- ${{ vars.SKILLS}} ➡️ (repo) "
-          echo "HOBBY -- ${{ vars.HOBBY}} ➡️ (org) "
-          echo "HOBBY -- ${{ env.HOBBY}} ➡️ (org) "
-          echo "AGE -- ${{ vars.AGE}} ➡️ (common) "
-          echo "PACE -- ${{ env.PACE}} ➡️ (workflow) "
-    
-  second_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Overiding with Workflow Env Var "
-        run: |
-          echo "MY_LANGAUGE -- ${{ vars.MY_LANGAUGE}} ➡️ (environment)"
-          echo "SKILLS -- ${{ vars.SKILLS}} ➡️ (repo) "
-          echo "HOBBY -- ${{ vars.HOBBY}} ➡️ (org) "
-          echo "AGE -- ${{ vars.AGE}} ➡️ (common) "
+      - name: "Printing Job Context"
+        run: toJSON(job)
         env:
           AGE: 303
           HOBBY: "SkyDiving"    
