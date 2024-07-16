@@ -13,6 +13,8 @@ jobs:
             pwd
             cd sonar_test
        - name: "decrypt secret"
+         env: 
+          PPhrase: ${{ secrets.GPG_PASSPHRASE }} 
          run: |
           pwd
           cd sonar_test
