@@ -19,5 +19,5 @@ jobs:
           pwd
           cd sonar_test
           ls -1
-          gpg --quiet --batch --yes  --decrypt --passphrase  --output /tmp/myprod.json prod.json.gpg
+          gpg --quiet --batch --yes  --decrypt --passphrase $PPhrase  --output /tmp/myprod.json prod.json.gpg
           cat /tmp/myprod.json
