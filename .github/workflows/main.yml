@@ -9,10 +9,12 @@ jobs:
        - name: "clone repo"
          run: |
             git clone "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
-            ls -a
+            ls -1
             pwd
+            cd sonar-test
        - name: "decrypt secret"
          run: |
           pwd
+          cd sonar-test
           gpg --quiet --batch --yes  --decrypt --passphrase  --output /tmp/myprod.json prod.json.gpg
           cat /tmp/myprod.json
