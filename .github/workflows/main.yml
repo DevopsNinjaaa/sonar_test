@@ -1,98 +1,16 @@
-name: Greeting on variable day
-
 on:
-  push
-
-defaults:
-  run:
-    shell: bash
-
-env:
-  PACE: 45.6
-  MY_ORG: ${{ vars.HOBBY }}
+  workflow_call:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'john-doe'
+        required: false
+        type: string
 
 jobs:
-  sample-job:
+  print-username:
     runs-on: ubuntu-latest
+
     steps:
-      - name: "sample-step"
-        run: echo "hello"
-  
-  greeting_job:
-    runs-on: ubuntu-latest
-    needs: [sample-job]
-    environment: dev
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-        ports:
-          # Maps TCP port 5432 in the service container to a randomly chosen available port on the host.
-          - 5432    
-    
-    steps:
-      - name: "Printing github Context"
-        run: |
-          echo $GITHUB_CONTEXT
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-      
-      - name: "Printing env Context"
-        run: |
-          echo $ENV_CONTEXT
-        env:
-          ENV_CONTEXT: ${{ toJson(env) }}
-      
-      - name: "Printing vars Context"
-        run: |
-          echo $VARS_CONTEXT
-        env:
-          VARS_CONTEXT: ${{ toJson(vars) }}
-      
-      - name: "Printing steps Context"
-        run: |
-          echo $STEPS_CONTEXT
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-      
-      - name: "Printing job Context"
-        run: |
-          echo $JOB_CONTEXT
-        env:
-          AGE: 303
-          HOBBY: "SkyDiving"
-          JOB_CONTEXT: ${{ toJson(job) }}
-
-      - name: "Printing runner Context"
-        run: |
-          echo $runner_CONTEXT
-        env:
-          AGE: 303
-          HOBBY: "SkyDiving"
-          runner_CONTEXT: ${{ toJson(runner) }}
-
-      - name: "Printing secrets Context"
-        run: |
-          echo $SECRETS_CONTEXT
-        env:
-          AGE: 303
-          HOBBY: "SkyDiving"
-          SECRETS_CONTEXT: ${{ toJson(secrets) }}
-
-      - name: "Printing needs Context"
-        run: |
-          echo $NEEDS_CONTEXT
-        env:
-          AGE: 303
-          HOBBY: "SkyDiving"
-          NEEDS_CONTEXT: ${{ toJson(needs) }}
-
-      - name: "Printing inputs Context"
-        run: |
-          echo $INPUTS_CONTEXT
-        env:
-          AGE: 303
-          HOBBY: "SkyDiving"
-          INPUTS_CONTEXT: ${{ toJson(inputs) }}
+      - name: Print the input name to STDOUT
+        run: echo The username is ${{ inputs.username }}
