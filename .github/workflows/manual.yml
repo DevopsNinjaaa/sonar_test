@@ -1,12 +1,13 @@
 name: "API Workflow"
-on:
-  repository_dispatch:
-    types: [my_deploy]
+
+on: push
 
 jobs:
   myjob:
     runs-on: ubuntu-latest
     steps:
-      - env:
-          MESSAGE: ${{ toJson(github.event) }}
-        run: echo $MESSAGE
+       - name: "clone repo"
+         run: |
+            git clone "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORT.git"
+            ls -a
+            pwd
