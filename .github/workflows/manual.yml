@@ -8,6 +8,6 @@ jobs:
     steps:
        - name: "clone repo"
          run: |
-            git clone "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORT.git"
+            git clone "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
             ls -a
             pwd
