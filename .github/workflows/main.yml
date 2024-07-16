@@ -8,7 +8,7 @@ jobs:
     steps:
        - name: "clone repo"
          run: |
-            git clone "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+            git clone -b ${GITHUB_REF_NAME} "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
             ls -1
             pwd
             cd sonar_test
