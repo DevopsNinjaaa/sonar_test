@@ -1,21 +1,34 @@
-name: My First CI Workflow
+name: "Deploy Workflow"
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      print_tags:
+        description: 'True to print to STDOUT'
+        required: true
+        type: boolean
+      tags:
+        description: 'Test scenario tags'
+        required: true
+        type: string
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
 
 jobs:
-  build:
+  print-tag:
     runs-on: ubuntu-latest
-    environment: dev
-    env:
-      NODE_ENV: production
+    if:  ${{ inputs.print_tags }} 
     steps:
-     - name: my sample step-1
-       run: echo "hellow from step 1"
-     - name: this is step-2
-       run: |
-          echo "hellow from step 2"
-          pwd
-          ls 
-          hostname
-     - name: Print environment variable
-       run: echo $NODE_ENV
+      - name: Print the input tag to STDOUT
+        run: echo  The tags are ${{ inputs.tags }} 
