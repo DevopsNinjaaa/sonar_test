@@ -11,4 +11,3 @@ jobs:
             echo ${{ startsWith('Hello world', 'He') }}
             echo ${{ endsWith('Hello world', 'ld')  }}
             echo ${{ format('Hello {0} {1} {2}', 'Mona', 'the', 'Octocat') }}
-            echo ${{ join(["lionel", "45", "trophy"] '- ') }}
