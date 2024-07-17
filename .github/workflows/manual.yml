@@ -5,9 +5,10 @@ jobs:
   demo-job:
     runs-on: ubuntu-latest
     steps:
-        run: |
-          echo ${{ contains('Hello world', 'llo') }}
-          echo ${{ startsWith('Hello world', 'He') }}
-          echo ${{ endsWith('Hello world', 'ld')  }}
-          echo ${{ format('Hello {0} {1} {2}', 'Mona', 'the', 'Octocat') }}
-          echo ${{ join(["lionel", "45", "trophy"] '- ') }}
+        - name: "example func use"
+          run: |
+            echo ${{ contains('Hello world', 'llo') }}
+            echo ${{ startsWith('Hello world', 'He') }}
+            echo ${{ endsWith('Hello world', 'ld')  }}
+            echo ${{ format('Hello {0} {1} {2}', 'Mona', 'the', 'Octocat') }}
+            echo ${{ join(["lionel", "45", "trophy"] '- ') }}
