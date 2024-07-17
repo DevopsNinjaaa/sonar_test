@@ -1,12 +1,13 @@
 name: "API Workflow"
-on:
-  repository_dispatch:
-    types: [my_deploy]
 
+on: push
 jobs:
-  myjob:
+  demo-job:
     runs-on: ubuntu-latest
     steps:
-      - env:
-          MESSAGE: ${{ toJson(github.event) }}
-        run: echo $MESSAGE
+        run: |
+          echo ${{ contains('Hello world', 'llo') }}
+          echo ${{ startsWith('Hello world', 'He') }}
+          echo ${{ endsWith('Hello world', 'ld')  }}
+          echo ${{ format('Hello {0} {1} {2}', 'Mona', 'the', 'Octocat') }}
+          echo ${{ join(["lionel", "45", "trophy"] '- ') }}
