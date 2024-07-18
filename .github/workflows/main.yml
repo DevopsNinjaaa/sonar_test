@@ -3,13 +3,13 @@ name: Flask App Workflow
 on: push 
 
 jobs:
-  container-test-job:
+  app-test:
     runs-on: ubuntu-latest
     services:
       app: 
         image: vegito/demoapp:player-ut-1.0
         env:
-          MONGO_UR: mymongo://host.docker.internal:27017 
+          MONGO_URL: mymongo://host.docker.internal:27017 
           MONGO_USERNAME: vegito
           MONGO_PASSWORD: veg@123 
         ports:
