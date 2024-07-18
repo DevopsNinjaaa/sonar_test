@@ -9,7 +9,7 @@ jobs:
       app: 
         image: vegito/demoapp:player-ut-1.0
         env:
-          MONGO_URL: mymongo://host.docker.internal:27017 
+          MONGO_URL: mongodb://mymongo:27017 
           MONGO_USERNAME: vegito
           MONGO_PASSWORD: veg@123 
         ports:
