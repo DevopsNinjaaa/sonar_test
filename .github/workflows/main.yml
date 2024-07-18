@@ -18,7 +18,8 @@ jobs:
         uses: docker://vegito/demoapp:player-ut-1.0
         with:
           entrypoint: python
+          args: /usr/src/app/app.py
+        env:  
           MONGO_URL: mongodb://mymongo:27017 
           MONGO_USERNAME: vegito
           MONGO_PASSWORD: veg@123 
-          args: app.py
