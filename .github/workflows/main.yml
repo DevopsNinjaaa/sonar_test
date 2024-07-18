@@ -1,31 +1,42 @@
-name: CI
+name: Flask App Workflow
 
 on: push 
 
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
-    container:
-      image: node:18
-      env:
-        NODE_ENV: development
-      ports:
-        - 80
-      volumes:
-        - my_docker_volume:/volume_mount
-      options: --cpus 1
+    services:
+      app: 
+        image: vegito/demoapp:player-ut-1.0
+        env:
+          MONGO_UR: mymongo://host.docker.internal:27017 
+          MONGO_USERNAME: vegito
+          MONGO_PASSWORD: veg@123 
+        ports:
+          - 5050:5000
+        volumes:
+          - my_docker_volume:/app
+      mymongo:
+        image: mongo:latest
+        env:
+          MONGO_INITDB_ROOT_USERNAME: vegito
+          MONGO_INITDB_ROOT_PASSWORD: veg@123
+        ports:
+          - 27017:27017
     steps:
-      - name: Check for dockerenv file
+      - name: Add user 
         run: |
-           (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
-           node -v
-           cat /etc/os-release
-
-  another-test-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check for dockerenv file
+          curl -X POST http://127.0.0.1:5050/api/player \
+          -H "Content-Type: application/json" \
+          -d '{
+              "name": "Lionel Messi",
+              "matches": 900,
+              "goals": 860,
+              "assists": 900,
+              "club": "Inter Miami",
+              "age": 40,
+              "country": "Argentina"
+          }'
+      - name: Check User
         run: |
-           (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
-           node -v
-           cat /etc/os-release
+          curl -X GET http://127.0.0.1:5050/api/players
