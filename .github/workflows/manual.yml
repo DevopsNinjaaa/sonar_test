@@ -1,6 +1,7 @@
 name: "API Workflow"
 
-on: push
+on: issues
+
 jobs:
   demo-job:
     runs-on: ubuntu-latest
