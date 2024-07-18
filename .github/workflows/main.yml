@@ -1,7 +1,7 @@
 name: CI
 
-on:
-  push 
+on: push 
+
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
@@ -16,4 +16,7 @@ jobs:
       options: --cpus 1
     steps:
       - name: Check for dockerenv file
-        run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+        run: |
+           (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+           node -v
+           cat /etc/os-release
