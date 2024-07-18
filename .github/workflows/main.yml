@@ -6,16 +6,6 @@ jobs:
   app-test:
     runs-on: ubuntu-latest
     services:
-      app: 
-        image: vegito/demoapp:player-ut-1.0
-        env:
-          MONGO_URL: mongodb://mymongo:27017 
-          MONGO_USERNAME: vegito
-          MONGO_PASSWORD: veg@123 
-        ports:
-          - 5050:5000
-        volumes:
-          - my_docker_volume:/app
       mymongo:
         image: mongo:latest
         env:
@@ -24,19 +14,11 @@ jobs:
         ports:
           - 27017:27017
     steps:
-      - name: Add user 
-        run: |
-          curl --no-progress-meter -X POST http://127.0.0.1:5050/api/player \
-          -H "Content-Type: application/json" \
-          -d '{
-              "name": "Lionel Messi",
-              "matches": 900,
-              "goals": 860,
-              "assists": 900,
-              "club": "Inter Miami",
-              "age": 40,
-              "country": "Argentina"
-          }'
-      - name: Check User
-        run: |
-          curl  --no-progress-meter -X GET http://127.0.0.1:5050/api/players
+      - name: Run App
+        uses: docker://vegito/demoapp:player-ut-1.0
+        with:
+          entrypoint: python
+          MONGO_URL: mongodb://mymongo:27017 
+          MONGO_USERNAME: vegito
+          MONGO_PASSWORD: veg@123 
+          args: app.py
