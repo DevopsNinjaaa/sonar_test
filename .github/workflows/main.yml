@@ -20,3 +20,12 @@ jobs:
            (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
            node -v
            cat /etc/os-release
+
+  another-test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for dockerenv file
+        run: |
+           (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+           node -v
+           cat /etc/os-release
