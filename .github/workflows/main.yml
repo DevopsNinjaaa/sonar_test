@@ -1,25 +1,52 @@
-name: Flask App Workflow
+name: Staging Sites 1-1 to 1-4
+on:
+  push
 
-on: push 
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
 
 jobs:
-  app-test:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    services:
-      mymongo:
-        image: mongo:latest
-        env:
-          MONGO_INITDB_ROOT_USERNAME: vegito
-          MONGO_INITDB_ROOT_PASSWORD: veg@123
-        ports:
-          - 27017:27017
+    strategy:
+      matrix:
+        site:
+          - id: 1
+            server_name: stg1_data
+            environment: staging1
+            mysecret: secret1
+            app: "staging_zdasd_1"
+          - id: 2
+            server_name: stg2_data
+            environment: staging2
+            mysecret: secret2
+            app: "staging_zdasd_2"
+          - id: 3
+            server_name: stg3_data
+            environment: staging3
+            mysecret: secret3
+            app: "staging_zdasd_3"
+          - id: 4
+            server_name: stg4_data
+            environment: staging4
+            mysecret: ${{ secrets.AWS_SITE1_1_SECRET_ID }}
+            app: "staging_zdasd_4"
+      fail-fast: false
+
     steps:
-      - name: Run App
-        uses: docker://vegito/demoapp:player-ut-1.0
-        with:
-          entrypoint: python
-          args: /usr/src/app/app.py
-        env:  
-          MONGO_URL: mongodb://mymongo:27017 
-          MONGO_USERNAME: vegito
-          MONGO_PASSWORD: veg@123 
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Echo values
+        run: |
+          echo "SERVER_NAME: ${{ matrix.site.server_name }}"
+          echo "ENVIRONMENT: ${{ matrix.site.environment }}"
+          echo "SECRET: ${{ matrix.site.secret }}"
+          echo "APP: ${{ matrix.site.app }}"
+          echo "AWS_SECRET_ID: ${{ matrix.site.mysecret  }}" >> data.txt
+      
+      - name: cbeck value
+        run: |
+          cat data.txt
