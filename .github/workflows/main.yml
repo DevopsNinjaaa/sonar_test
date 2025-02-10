@@ -51,3 +51,5 @@ jobs:
       - name: Use output from build job
         run: |
           echo "Using output for ${{ matrix.site.name }}: ${{ needs.build.outputs['site_output-${{ matrix.site.id }}'] }}"
+      - run: ${{ tojson(needs) }}
+        shell: cat {0}
