@@ -1,46 +1,53 @@
-name: Staging Sites 1-1 to 1-4
+name: Staging Sites Build and Push
 on:
-  push
-
-permissions:
-  id-token: write
-  contents: write
-  pull-requests: write
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
     strategy:
       matrix:
         site:
           - id: 1
-            server_name: stg1_data
-            environment: staging1
-            app: "staging_zdasd_1"
+            name: site1
           - id: 2
-            server_name: stg2_data
-            environment: staging2
-            app: "staging_zdasd_2"
+            name: site2
           - id: 3
-            server_name: stg3_data
-            environment: staging3
-            app: "staging_zdasd_3"
-          - id: 4
-            server_name: stg4_data
-            environment: staging4
-            app: "staging_zdasd_4"
+            name: site3
       fail-fast: false
 
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Echo values
+      - name: Generate output for site
+        id: generate-output
         run: |
-          echo "SERVER_NAME: ${{ matrix.site.server_name }}"
-          echo "ENVIRONMENT: ${{ matrix.site.environment }}"
-          echo "APP: ${{ matrix.site.app }}"
-          echo "AWS_SECRET_ID: $AWS_SECRET_ID" >> data.txt
-      
-      - name: Check value
-        run: cat data.txt
+          # Simulate generating an output (e.g., image tag)
+          OUTPUT="output-for-${{ matrix.site.name }}"
+          echo "Generated output: $OUTPUT"
+          echo "output=$OUTPUT" >> $GITHUB_OUTPUT
+
+    outputs:
+      site_output: ${{ steps.generate-output.outputs.output }}
+
+  deploy:
+    needs: build
+    strategy:
+      matrix:
+        site:
+          - id: 1
+            name: site1
+          - id: 2
+            name: site2
+          - id: 3
+            name: site3
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use output from build job
+        run: |
+          echo "Using output for ${{ matrix.site.name }}: ${{ needs.build.outputs['site_output-${{ matrix.site.id }}'] }}"
