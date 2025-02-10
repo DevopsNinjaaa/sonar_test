@@ -16,22 +16,18 @@ jobs:
           - id: 1
             server_name: stg1_data
             environment: staging1
-            mysecret: secret1
             app: "staging_zdasd_1"
           - id: 2
             server_name: stg2_data
             environment: staging2
-            mysecret: secret2
             app: "staging_zdasd_2"
           - id: 3
             server_name: stg3_data
             environment: staging3
-            mysecret: secret3
             app: "staging_zdasd_3"
           - id: 4
             server_name: stg4_data
             environment: staging4
-            mysecret: ${{ secrets.AWS_SITE1_1_SECRET_ID }}
             app: "staging_zdasd_4"
       fail-fast: false
 
@@ -43,10 +39,8 @@ jobs:
         run: |
           echo "SERVER_NAME: ${{ matrix.site.server_name }}"
           echo "ENVIRONMENT: ${{ matrix.site.environment }}"
-          echo "SECRET: ${{ matrix.site.secret }}"
           echo "APP: ${{ matrix.site.app }}"
-          echo "AWS_SECRET_ID: ${{ matrix.site.mysecret  }}" >> data.txt
+          echo "AWS_SECRET_ID: $AWS_SECRET_ID" >> data.txt
       
-      - name: cbeck value
-        run: |
-          cat data.txt
+      - name: Check value
+        run: cat data.txt
